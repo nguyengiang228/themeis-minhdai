@@ -6,13 +6,53 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import ChatIcon from "@mui/icons-material/Chat";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Avatar from "../../assets/image/avt1.png";
 import Logo2 from "../../assets/logo/logo2.png";
-
-const Header = () => {
+const items = [
+  {
+    label: "Trang chủ",
+    icon: <HomeIcon fontSize="large" />,
+    url: "/",
+    // iconActive: ShoppingBag,
+  },
+  {
+    label: "Dự án",
+    icon: <ListIcon fontSize="large" />,
+    url: "/project",
+    // iconActive: ShoppingBag,
+  },
+  {
+    label: "Giới thiệu",
+    icon: <GroupsIcon fontSize="large" />,
+    url: "/introduce",
+    // iconActive: ShoppingBag,
+  },
+  {
+    label: "Phản hồi",
+    icon: <ChatIcon fontSize="large" />,
+    url: "/feedback",
+    // iconActive: ShoppingBag,
+  },
+  {
+    label: "Tin tức",
+    icon: <NewspaperIcon fontSize="large" />,
+    url: "/news",
+    // iconActive: ShoppingBag,
+  },
+  {
+    label: "Liên hệ",
+    icon: <PhoneIcon fontSize="large" />,
+    url: "/contacts",
+    // iconActive: ShoppingBag,
+  },
+];
+interface IHeader {
+  active: number;
+}
+const Header = ({ active }: IHeader) => {
   const navigate = useNavigate();
 
   return (
@@ -21,23 +61,28 @@ const Header = () => {
         <img style={{ width: "9rem" }} src={Logo2} />
       </Box>
       <Box className="header header-menu-option">
-        <Box
-          onClick={() => navigate("/login-user")}
-          className="header-menu-category"
-          sx={
-            location.pathname === "/" && {
-              bgcolor: "#b7cee0",
-              color: "#314C63",
-              borderRadius: "5px",
-            }
-          }
-        >
-          <HomeIcon fontSize="large" />
-          <Typography sx={{ fontWeight: "bold" }} fontSize={17}>
-            Trang chủ
-          </Typography>
-        </Box>
-        <Box
+        {items.map((item, index) => (
+          <NavLink
+            key={index}
+            // onClick={() => navigate(item.url)}
+            className="header-menu-category"
+            style={({ isActive }) => ({
+              padding: isActive ? "2px 10px" : 0,
+              textDecoration: "none",
+              backgroundColor: isActive ? "#b7cee0" : "",
+              color: isActive ? "#314C63" : "#fff",
+              borderRadius: isActive ? "5px" : "",
+            })}
+            to={`${item.url}`}
+          >
+            {/* <HomeIcon fontSize="large" /> */}
+            {item.icon}
+            <Typography sx={{ fontWeight: "bold" }} fontSize={17}>
+              {item.label}
+            </Typography>
+          </NavLink>
+        ))}
+        {/* <Box
           className="header-menu-category"
           onClick={() => navigate("/project")}
         >
@@ -78,7 +123,7 @@ const Header = () => {
           <Typography sx={{ "&:hover": { fontWeight: "bold" } }} fontSize={17}>
             Liên hệ
           </Typography>
-        </Box>
+        </Box> */}
       </Box>
       {location.pathname === "/" || location.pathname === "/contacts" ? (
         <Box className="header-login">
